@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interview Evaluation Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Interview Evaluation</h1>
+        </header>
+
+        <main>
+            <section id="upload-form">
+                <form action="/" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="file">Upload Interview Transcript:</label>
+                        <input type="file" name="file" id="file" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="test_file">Upload Test File (PDF/DOCX/TXT):</label>
+                        <input type="file" name="test_file" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="prompt">Optional Instructions:</label>
+                        <textarea name="prompt" id="prompt" rows="4" placeholder="Add specific instructions..."></textarea>
+                    </div>
+
+                    <button type="submit">Generate Evaluation</button>
+                </form>
+            </section>
+
+            {% if email_content %}
+            <section id="evaluation-results">
+                <h2>Evaluation Results</h2>
+
+                <article>
+                    <h3>Generated Email:</h3>
+                    <textarea id="email-body">{{ email_content }}</textarea>
+                </article>
+                <button id="send-email">Send via Gmail</button>
+
+                {% if topic_evaluations %}
+                <article>
+                    <h3>Topic Evaluations:</h3>
+                    <ul>
+                        {% for topic, evaluation in topic_evaluations.items() %}
+                        <li><strong>{{ topic }}:</strong> {{ evaluation }}</li>
+                        {% endfor %}
+                    </ul>
+                </article>
+                {% endif %}
+
+                {% if overall_rating %}
+                <article>
+                    <h3>Overall Rating:</h3>
+                    <p><strong>Rating:</strong> {{ overall_rating }} / 5</p>
+                </article>
+                {% endif %}
+            </section>
+            {% endif %}
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
